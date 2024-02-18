@@ -4,8 +4,8 @@ const users = require('../Models/userSchema')
 exports.register=async(req,res)=>{
     console.log('Inside Register Function');
     try{
-        const {username, email, password} = req.body
-        console.log(`${username} ${email} ${password}`);
+        const {userName, email, password} = req.body
+        console.log(`${userName} ${email} ${password}`);
         const existingUser = await users.findOne({email})
         if(existingUser){
             res.status(402).json("User already exists")
@@ -26,6 +26,7 @@ exports.register=async(req,res)=>{
 exports.login=async(req,res)=>{
     console.log('Inside Login Function');
     try{
+        console.log(req.body)
         const {email, password} = req.body
         console.log(`${email} ${password}`);
         const user = await users.findOne({email,password})
