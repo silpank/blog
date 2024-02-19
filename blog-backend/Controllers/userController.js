@@ -11,9 +11,11 @@ exports.register=async(req,res)=>{
             res.status(402).json("User already exists")
         }
         else{
+            console.log('inside else')
             const newUser = new users({
-                username,email,password
+                userName,email,password
             })
+            console.log(newUser)
             await newUser.save()
             res.status(200).json("User created successfully")
         }
