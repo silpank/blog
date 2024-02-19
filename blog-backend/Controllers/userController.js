@@ -28,14 +28,13 @@ exports.register=async(req,res)=>{
 exports.login=async(req,res)=>{
     console.log('Inside Login Function');
     try{
-        console.log(req.body)
         const {email, password} = req.body
         console.log(`${email} ${password}`);
         const user = await users.findOne({email,password})
         if(user){
-            const token = jwt.sign({userId:user._id},"superkey2024")
-            console.log(token);
-            res.status(200).json({user,token})
+            // const token = jwt.sign({userId:user._id},"superkey2024")
+            // console.log(token);
+            res.status(200).json({user})
         }
         else{
             res.status(402).json("User not found")
