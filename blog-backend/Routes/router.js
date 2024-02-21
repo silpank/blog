@@ -18,4 +18,10 @@ router.post('/login', userController.login)
 //New post API path
 router.post('/newPost', contentSchema.newPost)
 
+//New Comment path
+router.post('/:postId/newComment',contentSchema.newComment)
+
+//All Post path
+router.get('/blogPosts',contentSchema.blogPosts)
+
 module.exports = router 

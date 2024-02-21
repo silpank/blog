@@ -42,3 +42,46 @@ exports.newPost = async (req, res) => {
     res.status(500).json("Server Error")
   }
 }
+
+//Function to add New Comment
+exports.newComment = async (req, res) => {
+  console.log('inside New Post');
+  try {
+    const postId = req.params.postId;
+
+    const {
+
+      commenter,
+      likes,
+      comment,
+      date
+      //65d4f7323f0e42f9122ca5e7
+
+    } = req.body
+    console.log(`${commenter} ${likes} ${comment} `)
+    const updatedPost = await contents.findByIdAndUpdate(
+      postId, {
+        $push: {
+          comments: {
+            commenter,
+            likes,
+            comment,
+            date
+
+          }
+        }
+
+      },
+    );
+    console.log(updatedPost);
+    res.status(200).json('comment Succesfully')
+
+  } catch (err) {
+    console.error('Error adding comment:', error);
+    res.status(500).json({
+      message: 'Internal server error'
+    });
+  }
+}
+
+
