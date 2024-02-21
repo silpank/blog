@@ -1,5 +1,4 @@
 const contents = require('../Models/contentSchema')
-
 // Function to add a new post
 exports.newPost = async (req, res) => {
   console.log('inside New Post');
@@ -11,10 +10,8 @@ exports.newPost = async (req, res) => {
       heading,
       image,
       content,
-      likes,
       comments
     } = req.body
-    console.log(`${author} ${date} ${blogType} ${heading} ${image} ${content} ${likes} ${comments} `)
     // // Create a new instance of the Content model
     const postData = {
       author,
@@ -23,7 +20,7 @@ exports.newPost = async (req, res) => {
       heading,
       image,
       content,
-      likes,
+      likes: [],
       comments
     }
     const newPost = new contents(postData);
@@ -45,26 +42,25 @@ exports.newPost = async (req, res) => {
 
 //Function to add New Comment
 exports.newComment = async (req, res) => {
-  console.log('inside New Post');
+  console.log('inside New comment');
   try {
     const postId = req.params.postId;
 
     const {
 
       commenter,
-      likes,
+      // likes,
       comment,
       date
       //65d4f7323f0e42f9122ca5e7
 
     } = req.body
-    console.log(`${commenter} ${likes} ${comment} `)
     const updatedPost = await contents.findByIdAndUpdate(
       postId, {
         $push: {
           comments: {
             commenter,
-            likes,
+            // likes,
             comment,
             date
 
@@ -84,4 +80,51 @@ exports.newComment = async (req, res) => {
   }
 }
 
+//Function to add All Post
+exports.getAllPosts = async (req, res) => {
+  try {
+    const posts = await contents.find({})
+      .populate({
+        path: 'author',
+        model: 'users',
+        select: 'userName'
+      })
+      .populate({
+        path:'likes',
+        model:'users',
+        select:'userName'
+      })
+      .populate({
+        path: 'comments.commenter',
+        model: 'users',
+        select: 'userName'
+      });
 
+    res.status(200).json(posts);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error'
+    });
+  }
+}
+
+//Function to add Like
+exports.addLike = async (req, res) => {
+  const postId = req.params.postId;
+  try {
+    const {
+      userId
+    } = req.body
+    const updatedPost = await contents.findByIdAndUpdate(
+      postId, {
+        $push: {
+          likes: userId
+        }
+      }
+    )
+    res.status(200).json('like added')
+  } catch (error) {
+    res.status(500).json('Error in Like Function')
+  }
+}

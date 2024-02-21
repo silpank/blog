@@ -22,6 +22,8 @@ router.post('/newPost', contentSchema.newPost)
 router.post('/:postId/newComment',contentSchema.newComment)
 
 //All Post path
-router.get('/blogPosts',contentSchema.blogPosts)
+router.get('/allPosts',contentSchema.getAllPosts)
 
+//Add Like
+router.post('/:postId/addLike',contentSchema.addLike)
 module.exports = router 

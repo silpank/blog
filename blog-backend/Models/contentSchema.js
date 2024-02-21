@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 const users = require('../Models/userSchema')
 
-// schema creation 
+// content schema creation 
 const contentSchema = new mongoose.Schema({
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -29,20 +29,21 @@ const contentSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    likes: {
-        type: Number,
-        default: 0
-    },
+    likes: [{
+        type: mongoose.Schema.Types.ObjectId,
+                ref: 'users',
+                required: true
+            }],
     comments: [{
         commenter: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'users',
             required: true
         },
-        likes: {
-            type: Number,
-            default: 0
-        },
+        // likes: {
+        //     type: Number,
+        //     default: 0
+        // },
         comment: {
             type: String,
             required: true
