@@ -4,7 +4,6 @@ exports.newPost = async (req, res) => {
   console.log('inside New Post');
   try {
     const {
-      author,
       date,
       blogType,
       heading,
@@ -14,7 +13,7 @@ exports.newPost = async (req, res) => {
     } = req.body
     // // Create a new instance of the Content model
     const postData = {
-      author,
+      author:req.payload,
       date,
       blogType,
       heading,
@@ -47,19 +46,18 @@ exports.newComment = async (req, res) => {
     const postId = req.params.postId;
 
     const {
-
-      commenter,
       // likes,
       comment,
       date
       //65d4f7323f0e42f9122ca5e7
 
     } = req.body
+console.log(req.payload);
     const updatedPost = await contents.findByIdAndUpdate(
       postId, {
         $push: {
           comments: {
-            commenter,
+            commenter:req.payload,
             // likes,
             comment,
             date
@@ -69,7 +67,6 @@ exports.newComment = async (req, res) => {
 
       },
     );
-    console.log(updatedPost);
     res.status(200).json('comment Succesfully')
 
   } catch (err) {
@@ -101,7 +98,7 @@ exports.getAllPosts = async (req, res) => {
       });
 
     res.status(200).json(posts);
-  } catch (err) {
+  } catch (err) {   +
     console.error(err);
     res.status(500).json({
       message: 'Server Error'
@@ -113,13 +110,10 @@ exports.getAllPosts = async (req, res) => {
 exports.addLike = async (req, res) => {
   const postId = req.params.postId;
   try {
-    const {
-      userId
-    } = req.body
     const updatedPost = await contents.findByIdAndUpdate(
       postId, {
         $push: {
-          likes: userId
+          likes: req.payload
         }
       }
     )

@@ -3,12 +3,11 @@ const jwt = require('jsonwebtoken')
 const jwtmiddleware = (req,res,next)=>{
     console.log("Inside jwt middleware - router-level-middleware");
     //get token from user request
-    const token = req.headers['authorization']?.slice(7)
-    console.log(token);
+   
     try{
+        const token = req.headers['x-access-token']
     //token verification
         const tokenVerification = jwt.verify(token,'superkey2024')
-        console.log(tokenVerification);
         req.payload = tokenVerification.userId
         next()
     }

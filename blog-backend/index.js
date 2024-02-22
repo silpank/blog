@@ -7,7 +7,7 @@ const express = require('express')
 //import Router
 const router =require('./Routes/router')
 
-const appMiddleware = require("./Middlewares/appMiddleware")
+const jwtmiddleware = require("./Middlewares/jwtMiddleware")
 
 //import cors
 const cors = require ('cors')
@@ -18,13 +18,14 @@ const db = require('./DB/connection')
 //create a application using express
 const blogServer = express()
 
+
 //using cors to connect forntend 
 blogServer.use(cors())
 
 //create a middleware for parsing json data
 blogServer.use(express.json())
 
-//blogServer.use(appMiddleware)
+
 
 // telling to use in backend
 blogServer.use(router)
