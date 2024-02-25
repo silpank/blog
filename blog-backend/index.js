@@ -25,10 +25,10 @@ blogServer.use(cors())
 //create a middleware for parsing json data
 blogServer.use(express.json())
 
-
-
 // telling to use in backend
 blogServer.use(router)
+
+blogServer.use('/uploads', express.static('uploads'));
 
 // creation port
 const PORT = 8000 || process.env.PORT

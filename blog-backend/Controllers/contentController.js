@@ -7,17 +7,18 @@ exports.newPost = async (req, res) => {
       date,
       blogType,
       heading,
-      image,
       content,
       comments
     } = req.body
+
+    const imagePath = req.file.path
     // // Create a new instance of the Content model
     const postData = {
       author:req.payload,
       date,
       blogType,
       heading,
-      image,
+      image: imagePath,
       content,
       likes: [],
       comments

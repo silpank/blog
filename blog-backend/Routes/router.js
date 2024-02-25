@@ -9,6 +9,8 @@ const jwtMiddleware = require('../Middlewares/jwtMiddleware')
 //create a router object of express to define a path
 const router = new express.Router()
 
+const multer = require('../Middlewares/mult')
+
 //register API path
 router.post('/register', userController.register)
 
@@ -17,7 +19,7 @@ router.post('/login', userController.login)
 
 
 //New post API path
-router.post('/newPost',jwtMiddleware, contentSchema.newPost)
+router.post('/newPost',jwtMiddleware, multer.upload.single('image'), contentSchema.newPost)
 
 //New Comment path
 router.post('/:postId/newComment',jwtMiddleware,contentSchema.newComment)
