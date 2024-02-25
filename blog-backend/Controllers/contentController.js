@@ -30,7 +30,7 @@ exports.newPost = async (req, res) => {
     //response
     res.status(200).json("New post Saved")
 
-    console.log('New post added:', savedPost);
+    console.log('New post added');
 
   } catch (error) {
 
@@ -53,7 +53,6 @@ exports.newComment = async (req, res) => {
       //65d4f7323f0e42f9122ca5e7
 
     } = req.body
-console.log(req.payload);
     const updatedPost = await contents.findByIdAndUpdate(
       postId, {
         $push: {
@@ -121,5 +120,34 @@ exports.addLike = async (req, res) => {
     res.status(200).json('like added')
   } catch (error) {
     res.status(500).json('Error in Like Function')
+  }
+}
+
+exports.getPost = async (req, res) => {
+  console.log('inside getPost')
+  try {
+    const postId = req.params.postId;
+    const post = await contents.findById(postId)
+      .populate({
+        path: 'author',
+        model: 'users',
+        select: 'userName'
+      })
+      .populate({
+        path:'likes',
+        model:'users',
+        select:'userName'
+      })
+      .populate({
+        path: 'comments.commenter',
+        model: 'users',
+        select: 'userName'
+      });
+    res.status(200).json(post);
+  } catch (err) {   +
+    console.error(err);
+    res.status(500).json({
+      message: 'Server Error'
+    });
   }
 }

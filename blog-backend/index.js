@@ -39,6 +39,5 @@ blogServer.listen(PORT,()=>{
 
 //localhost:8000
 blogServer.get('/',(req,res)=>{
-  console.log("inside get");
   res.send(`<h1>Blog Server is Started</h1>`)    
 })

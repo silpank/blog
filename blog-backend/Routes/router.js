@@ -27,6 +27,8 @@ router.post('/:postId/newComment',jwtMiddleware,contentSchema.newComment)
 //All Post path
 router.get('/allPosts',jwtMiddleware,contentSchema.getAllPosts)
 
+router.get('/getPost/:postId', jwtMiddleware, contentSchema.getPost)
+
 //Add Like
 router.post('/:postId/addLike',jwtMiddleware,contentSchema.addLike)
 

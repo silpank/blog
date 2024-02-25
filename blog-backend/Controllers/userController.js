@@ -11,14 +11,12 @@ exports.register = async (req, res) => {
             email,
             password
         } = req.body
-        console.log(`${userName} ${email} ${password}`);
         const existingUser = await users.findOne({
             email
         })
         if (existingUser) {
             res.status(402).json("User already exists")
         } else {
-            console.log('inside else')
             const newUser = new users({
                 userName,
                 email,
@@ -40,7 +38,6 @@ exports.login = async (req, res) => {
             email,
             password
         } = req.body
-        console.log(`${email} ${password}`);
         const user = await users.findOne({
             email,
             password
@@ -49,7 +46,6 @@ exports.login = async (req, res) => {
             const token = jwt.sign({
                 userId: user._id
             }, "superkey2024")
-            console.log(token);
             res.status(200).json({
                 user,
                 token
