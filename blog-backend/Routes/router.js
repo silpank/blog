@@ -32,4 +32,6 @@ router.get('/getPost/:postId', jwtMiddleware, contentSchema.getPost)
 //Add Like
 router.post('/:postId/addLike',jwtMiddleware,contentSchema.addLike)
 
+router.post('/:postId/removeLike', jwtMiddleware, contentSchema.removeLike)
+
 module.exports = router 

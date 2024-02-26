@@ -47,24 +47,20 @@ exports.newComment = async (req, res) => {
     const postId = req.params.postId;
 
     const {
-      // likes,
       comment,
       date
-      //65d4f7323f0e42f9122ca5e7
-
     } = req.body
+
+    console.log(date)
     const updatedPost = await contents.findByIdAndUpdate(
       postId, {
         $push: {
           comments: {
             commenter:req.payload,
-            // likes,
             comment,
             date
-
           }
         }
-
       },
     );
     res.status(200).json('comment Succesfully')
@@ -108,6 +104,7 @@ exports.getAllPosts = async (req, res) => {
 
 //Function to add Like
 exports.addLike = async (req, res) => {
+  console.log('inside add like')
   const postId = req.params.postId;
   try {
     const updatedPost = await contents.findByIdAndUpdate(
@@ -122,6 +119,23 @@ exports.addLike = async (req, res) => {
     res.status(500).json('Error in Like Function')
   }
 }
+
+exports.removeLike = async (req, res) => {
+  const postId = req.params.postId;
+  const userId = req.payload;
+  console.log('inside remove like')
+  try {
+    const updatedPost = await contents.findByIdAndUpdate(
+      postId, 
+      { $pull: { likes: userId } }
+    );
+
+    res.status(200).json('Like removed');
+  } catch (error) {
+    res.status(500).json('Error in Remove Like Function');
+  }
+};
+
 
 exports.getPost = async (req, res) => {
   console.log('inside getPost')
