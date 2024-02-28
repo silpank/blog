@@ -22,8 +22,14 @@ const contentSchema = new mongoose.Schema({
         required: true
     },
     image: {
-        type: String,
-        required: true
+        data: {
+            type: String,
+            required: true
+        },
+        contentType: {
+            type: String,
+            required: true
+        }
     },
     content: {
         type: String,

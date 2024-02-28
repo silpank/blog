@@ -57,3 +57,36 @@ exports.login = async (req, res) => {
         res.status(500).json("server error")
     }
 }
+
+exports.addDetails = async (req, res) => {
+    console.log('inside add details')
+    try {
+        const {
+            firstName,
+            lastName
+        } = req.body
+
+        const fullName = `${firstName} ${lastName}`
+        const bufferImage = req.file.buffer.toString('base64')
+        const contentType = req.file.mimetype
+
+        const updatingData = {
+            fullName,
+            image: {
+                data: bufferImage,
+                contentType
+            },
+            dataFilled: true
+        }
+        const userId = req.payload
+        const options = {
+            new: true
+        };
+        const user = await users.findByIdAndUpdate(userId, updatingData, options)
+        if (user) {
+            res.status(200).json({user})
+        }
+    } catch(err) {
+        res.status(500).json("server error")
+    }
+}

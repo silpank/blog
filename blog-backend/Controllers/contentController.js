@@ -11,14 +11,20 @@ exports.newPost = async (req, res) => {
       comments
     } = req.body
 
-    const imagePath = req.file.path
+    const imagePath = req.file.buffer.toString('base64')
+    const contentType = req.file.mimetype
+
+    imageData = {
+      data: imagePath,
+      contentType
+    }
     // // Create a new instance of the Content model
     const postData = {
-      author:req.payload,
+      author: req.payload,
       date,
       blogType,
       heading,
-      image: imagePath,
+      image: imageData,
       content,
       likes: [],
       comments
@@ -54,14 +60,14 @@ exports.newComment = async (req, res) => {
     console.log(date)
     const updatedPost = await contents.findByIdAndUpdate(
       postId, {
-        $push: {
-          comments: {
-            commenter:req.payload,
-            comment,
-            date
-          }
+      $push: {
+        comments: {
+          commenter: req.payload,
+          comment,
+          date
         }
-      },
+      }
+    },
     );
     res.status(200).json('comment Succesfully')
 
@@ -80,21 +86,22 @@ exports.getAllPosts = async (req, res) => {
       .populate({
         path: 'author',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       })
       .populate({
-        path:'likes',
-        model:'users',
-        select:'userName'
+        path: 'likes',
+        model: 'users',
+        select: 'userName image fullName'
       })
       .populate({
         path: 'comments.commenter',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       });
 
     res.status(200).json(posts);
-  } catch (err) {   +
+  } catch (err) {
+    +
     console.error(err);
     res.status(500).json({
       message: 'Server Error'
@@ -109,10 +116,10 @@ exports.addLike = async (req, res) => {
   try {
     const updatedPost = await contents.findByIdAndUpdate(
       postId, {
-        $push: {
-          likes: req.payload
-        }
+      $push: {
+        likes: req.payload
       }
+    }
     )
     res.status(200).json('like added')
   } catch (error) {
@@ -126,7 +133,7 @@ exports.removeLike = async (req, res) => {
   console.log('inside remove like')
   try {
     const updatedPost = await contents.findByIdAndUpdate(
-      postId, 
+      postId,
       { $pull: { likes: userId } }
     );
 
@@ -145,20 +152,21 @@ exports.getPost = async (req, res) => {
       .populate({
         path: 'author',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       })
       .populate({
-        path:'likes',
-        model:'users',
-        select:'userName'
+        path: 'likes',
+        model: 'users',
+        select: 'userName image fullName'
       })
       .populate({
         path: 'comments.commenter',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       });
     res.status(200).json(post);
-  } catch (err) {   +
+  } catch (err) {
+    +
     console.error(err);
     res.status(500).json({
       message: 'Server Error'
