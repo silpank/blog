@@ -34,4 +34,6 @@ router.post('/:postId/addLike',jwtMiddleware,contentSchema.addLike)
 
 router.post('/:postId/removeLike', jwtMiddleware, contentSchema.removeLike)
 
+router.patch('/addUserDetails', jwtMiddleware, multer.upload.single('image'), userController.addDetails)
+
 module.exports = router 

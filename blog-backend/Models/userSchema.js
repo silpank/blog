@@ -14,8 +14,26 @@ const userSchema = new mongoose.Schema({
     password:{
         type:String,
         required:true
+    },
+    fullName: {
+        type:String,
+        default: ''
+    },
+    image: {
+        data: {
+            type: String,
+            default: ''
+        },
+        contentType: {
+            type: String,
+            default: ''
+        }
+    },
+    dataFilled: {
+        type: Boolean,
+        default: false
     }
 })
 const users = mongoose.model("users",userSchema)
 
-module.exports= users
+module.exports= users   

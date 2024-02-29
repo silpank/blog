@@ -80,17 +80,17 @@ exports.getAllPosts = async (req, res) => {
       .populate({
         path: 'author',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       })
       .populate({
         path:'likes',
         model:'users',
-        select:'userName'
+        select:'userName image fullName'
       })
       .populate({
         path: 'comments.commenter',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       });
 
     res.status(200).json(posts);
@@ -145,17 +145,17 @@ exports.getPost = async (req, res) => {
       .populate({
         path: 'author',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       })
       .populate({
         path:'likes',
         model:'users',
-        select:'userName'
+        select:'userName image fullName'
       })
       .populate({
         path: 'comments.commenter',
         model: 'users',
-        select: 'userName'
+        select: 'userName image fullName'
       });
     res.status(200).json(post);
   } catch (err) {   +

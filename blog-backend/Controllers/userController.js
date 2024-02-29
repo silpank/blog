@@ -57,3 +57,33 @@ exports.login = async (req, res) => {
         res.status(500).json("server error")
     }
 }
+
+
+exports.addDetails = async (req, res) => {
+    console.log('inside add details')
+    try {
+        const {
+            firstName,
+            lastName
+        } = req.body
+
+        const fullName = `${firstName} ${lastName}`
+        const imagePath = req.file.path
+
+        const updatingData = {
+            fullName,
+            image: imagePath,
+            dataFilled: true
+        }
+        const userId = req.payload
+        const options = {
+            new: true
+        };
+        const user = await users.findByIdAndUpdate(userId, updatingData, options)
+        if (user) {
+            res.status(200).json({user})
+        }
+    } catch(err) {
+        res.status(500).json("server error")
+    }
+}
